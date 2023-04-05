@@ -281,7 +281,7 @@ namespace MechJebLib.Maths
 
         public static double LatitudeFromBCI(V3 r)
         {
-            return Math.Asin(Clamp(r.z / r.magnitude, -1, 1));
+            return SafeAsin(r.z / r.magnitude);
         }
 
         public static double LongitudeFromBCI(V3 r)
@@ -368,6 +368,18 @@ namespace MechJebLib.Maths
             V3 enu = ECIToENU(r, v).normalized;
             return (Math.Asin(enu.z), Clamp2Pi(Math.Atan2(enu.x, enu.y)));
         }
+
+        public static V3 SphericalToCartesian(double r, double theta, double phi)
+        {
+            return new V3(Math.Cos(phi)*Math.Sin(theta), Math.Sin(phi)*Math.Sin(theta), Math.Cos(theta)) * r;
+        }
+
+        /*
+        public static (double ) CartesianToSpherical(V3 r)
+        {
+            
+        }
+        */
 
         /// <summary>
         ///     Find the time to a target plane defined by the LAN and inc for a rocket on the ground.  Wrapper which handles
